@@ -9,5 +9,4 @@ RUN wget -q -O - http://apache.mirrors.pair.com/zookeeper/zookeeper-3.5.1-alpha/
 
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
-ADD mesos-master-init.sh /usr/local/bin/
-ENTRYPOINT ["mesos-master-init.sh"]
+ADD zk-discover /usr/local/bin/

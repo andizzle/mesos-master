@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+export MESOS_IP=`/sbin/ip route|awk '/eth1/ { print $9 }'`
+
+ZK_IP=${1:-${MESOS_IP}}
+
+export MESOS_HOSTNAME=$ZK_IP
+
+export MESOS_ROLES=role1
+
+ZK_SERVERS=($(/opt/zookeeper/bin/zkCli.sh -server $ZK_IP:2181 get /zookeeper/config | grep ^server | awk -F':' '{print $1}' | awk -F'=' '{print $2}'))
+
+ZK_SERVERS=$(printf "%s:2181," "${ZK_SERVERS[@]}")
+
+ZK_SERVERS=${ZK_SERVERS::-1}
+
+export MESOS_ZK=zk://$ZK_SERVERS/mesos
